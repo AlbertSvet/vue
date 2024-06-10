@@ -1,0 +1,51 @@
+1. Создаем инпуты для ввода пользователем данных.
+Затем создаем несколько переменых в которые мы будем получаеть значение из инпутов в которые введт чтото пользователь
+ data () {
+      return {
+        users: [],
+        userName: '',
+        userPass: '',
+        userEmail: '',
+        error: ''
+      }
+    },
+
+чтобы получать значени из инпутов на странице нужно добавить обработчик события v-model= "userName"   .. https://v3.ru.vuejs.org/ru/guide/introduction.html#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%BC-%D0%B2%D0%B2%D0%BE%D0%B4%D0%BE%D0%BC
+<input type="text" placeholder="Имя" v-model= "userName">
+    <input type="password" placeholder="Пароль" v-model= "userPass">
+    <input type="email" placeholder="Емаил" v-model= "userEmail"> 
+
+
+2. По кнопки отравить мы будем добавлять все полученные данные в массив, затем его перебирать и выводить на экран.  .. https://v3.ru.vuejs.org/ru/guide/introduction.html#%D0%B4%D0%B5%D0%BA%D0%BB%D0%B0%D1%80%D0%B0%D1%82%D0%B8%D0%B2%D0%BD%D0%B0%D1%8F-%D0%BE%D1%82%D1%80%D0%B8%D1%81%D0%BE%D0%B2%D0%BA%D0%B0
+Для этого нужно повесить обработчик события на кнопку и передать в нее функцию.
+<button type="button" @click="sendData()">Отправить</button>
+Функцию добавляем в метод
+ sendData(){
+        if(this.userName !== '' && this.userPass !== '' && this.userEmail !== ''){
+            this.users.push({
+              user:'Имя: ' + this.userName ,
+              pass:'Пароль: ' + this.userPass,
+              email:'Емаил: ' + this.userEmail,
+            })
+            this.userName = '';
+            this.userPass = '';
+            this.userEmail = '';
+            this.error = ''
+        }else{
+            this.error = 'Заполните все поля'
+        }
+       
+      },
+
+3. Для перебора массива используются циклы. Создадим тег div   .. https://v3.ru.vuejs.org/ru/guide/introduction.html#%D1%83%D1%81%D0%BB%D0%BE%D0%B2%D0%B8%D1%8F-%D0%B8-%D1%86%D0%B8%D0%BA%D0%BB%D1%8B
+
+<div v-for="(el, index) in users" :key="index"></div> 
+используется v-for в нем мы говорим что перебираем 
+массив users el это каждый элемент массива так же нужно указать ключ каждого элемента это index
+затем выводим на страницу, получается el это объект, нужно обратиться к его свойствуй чтобы вывести значение
+{{el.name}}
+{{el.pass}}
+{{el.email}}
+
+4. Установим проверку что если в массиве ничего нет то выводим что нет польз. для этого используется v-if  ..https://v3.ru.vuejs.org/ru/guide/introduction.html#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%BC-%D0%B2%D0%B2%D0%BE%D0%B4%D0%BE%D0%BC
+<div v-if="users.length == 0">Нет польз.</div> если длина массива равна 0 то выводим нет польз.

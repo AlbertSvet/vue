@@ -1,0 +1,63 @@
+1. подключаем файл стилей. И подключаем его в main.js 
+2. export default {
+    data() {
+      return {
+          city: '',
+
+      }
+    }
+  } - экспортируем объект в родительском компоненте. Таким образом, когда мы экспортируете компонент, 
+делая его доступным для использования в других частях  приложения, таких как другие компоненты или 
+файлы шаблонов.
+
+3. Получаем данные от пользователя. Для этого нужно добавить обработчик события в инпут v-on:input="" и   // https://v3.ru.vuejs.org/ru/guide/introduction.html#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%BC-%D0%B2%D0%B2%D0%BE%D0%B4%D0%BE%D0%BC
+записать данные в переменую. city =$event.target.value
+v-on:input= this.city= $event.target.value
+
+Упрощеная запись v-model="city"
+
+4. Создадим условие. Если свойство city не будет содержать значение то выводим текст в вашем городу а иначе значение свойства city 
+<p>Узнать погоду в {{ city == "" ? "в вашем городе" : city }}</p>
+
+5. Создадим условие. Кнопка не будет показываться если мы не ввидел название города   // https://vuejs.org/guide/essentials/conditional.html
+v-show = " " - если условие будет являться коректным тогда мы будем показывать кнопку и наоборот 
+ <button v-show="city != '' ">Получить погоду</button>
+
+Но мы сделаем кнопку не активной. Для этого мы будем использовать v-if работает вместе с v-else   //https://vuejs.org/guide/essentials/conditional.html
+<button v-if="city != ''">Получить погоду</button>
+<button disabled v-else>Введите название города</button> 
+
+5. Создадим computed свойство. Это автоматически обрабатываемое свойство. 
+ computed: {
+        cityName() {
+          return '~ ' + this.city + ' ~'
+        }
+    }
+
+6. Получать погоду по введеному названию. Для этого вешаем обработчик события на кнопку @click  // https://v3.ru.vuejs.org/ru/guide/introduction.html#%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BB%D1%8C%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D0%B5%D0%BB%D1%8C%D1%81%D0%BA%D0%B8%D0%BC-%D0%B2%D0%B2%D0%BE%D0%B4%D0%BE%D0%BC
+Для этого создадим новую функцию и запишем ее в  methods: getWeather(){}
+в функции getWeather(){} создадим проверку что ввел пользователь 
+<button v-if="city != ''" @click="getWeather()">Получить погоду</button>
+
+
+Также подключим библеотеку Axios (npm i axios ввести в терминал). по АПИ будем получать json с информацией о погоде
+Далее нужно исмпортировать библеотеку. Затем вызываем метод get и передаем адресс axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=6261dc6d3f7404adb898b24e87b62318`)
+
+обработаем приходящий ответ от сервена  .then(res => (this.info = res.data))
+
+Создадим методы для вывода данных о темпер.
+
+showTemp() {
+          return "Температура" + this.info.main.temp
+        },
+        showTempLike() {
+          return "Ощущается как" + this.info.main.feels_like
+        },
+        showTempMin() {
+          return "Ощущается как" + this.info.main.temp_min
+        },
+        showTempMin() {
+          return "Ощущается как" + this.info.main.temp_max
+        },
+
+ 

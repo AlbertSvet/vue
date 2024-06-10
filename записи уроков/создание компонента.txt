@@ -1,0 +1,89 @@
+Отдельный блок сайта. ..https://v3.ru.vuejs.org/ru/guide/component-registration.html#%D0%BB%D0%BE%D0%BA%D0%B0%D0%BB%D1%8C%D0%BD%D0%B0%D1%8F-%D1%80%D0%B5%D0%B3%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D0%B2-%D0%BC%D0%BE%D0%B4%D1%83%D0%BB%D1%8C%D0%BD%D0%BE%D0%B8-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D0%B5
+Создадим компонент который будет описать каждого отдельного пользователя который будет выводиться на страницу.
+1.Создаем папку для компонентов, в ней создаем отдельный файл компонента User.vue
+в нем нужно прописать все стандартные теги 
+<template>
+</template>
+<script>
+</script>
+<style>
+</style>
+
+из тега скрипт мы должны экспортировать.
+<script>
+    export default {
+        
+    }
+</script>
+
+Затем мы должны подключить этот компонент в родительский компонент с помощью import
+// Импортируем компонент
+import User from './components/User.vue'
+Так же вродительском компоненты нужно указать с какими компонентами мы будем работать для этого нужно прописать
+components: {
+      User
+    },
+
+2. нужно переместить структуры html в дочерний компонент User
+
+  <div>
+        <button className="delet" @click="deletUser(index)">Удалить</button>
+        <p>
+          {{user.user}}</p>
+        <p>
+          {{user.pass}}</p>
+        <p>
+          {{user.email}}</p>
+      </div>
+3. В родительском компоненте мы прописываем компонент прям в html структуру 
+<template>
+	  <User v-for="(el, index) in users" 
+</template>
+
+4. Как выводить на экран пользователей из дочернего компонента. Для этого нужно в компоненте User создать атрибут
+и передавать его значение 
+<User v-for="(el, index) in users" 
+      :key="index"
+      :user="el" 
+Затем в дочернем компоненте нужно получить значение. Для этого нужно прописать  .. https://v3.ru.vuejs.org/ru/guide/web-components.html#definecustomelement
+  props: {
+            user:{
+                type: Object,
+                required: true
+            },
+Теперь когда мы его принимаем мы можем его использовать для вывода 
+<p>
+    {{user.user}}
+</p>
+
+ <User v-for="(el, index) in users" Также передаем индекс, функцию в дочерний компонент для чтого чтобы могли использовать
+      :key="index"
+      :user="el" 
+      :index="index" 
+      :deletUser="deletUser" 
+      className="user"/>
+ props: {
+            user:{
+                type: Object,
+                required: true
+            },
+            index:{
+                type: Number,
+                required: true
+            },
+            deletUser:{
+                type: Function,
+                required: true
+            }
+        }
+<div>
+        <button className="delet" @click="deletUser(index)">Удалить</button>
+        <p>
+          {{user.user}}</p>
+        <p>
+          {{user.pass}}</p>
+        <p>
+          {{user.email}}</p>
+</div>
+Логика такая из из родительского компонента мы передаем значения компонента используя атрибут и в него помещаем значение 
+затем принимаем в пропс
